@@ -30,7 +30,7 @@ class CPUTop extends Module {
 
 
   ALU.io.in1 := RegisterFile.io.a
-  val ALUMux = Mux(ControlUnit.io.immedSelector, programMemory.io.instructionRead(17, 9).pad(32), RegisterFile.io.a)
+  val ALUMux = Mux(ControlUnit.io.immedSelector, programMemory.io.instructionRead(15, 7).pad(32), RegisterFile.io.b)
   ALU.io.in2 := ALUMux
   dataMemory.io.address := ALU.io.result(15, 0)
 
@@ -53,11 +53,11 @@ class CPUTop extends Module {
   RegisterFile.io.writeEnable := ControlUnit.io.writeEnableReg
   dataMemory.io.writeEnable := ControlUnit.io.writeEnableDatMem
   ALU.io.sel := ControlUnit.io.aluOp
-  programCounter.io.jump := ControlUnit.io.branch & ALU.io.equal
+  programCounter.io.jump := ControlUnit.io.branch && ALU.io.equal
 
-  RegisterFile.io.aSel := programMemory.io.instructionRead(21, 18) // Where the register is specified in the instructions
-  RegisterFile.io.bSel := programMemory.io.instructionRead(17, 14) // Where the register is specified in the instructions
-  RegisterFile.io.writeSel := programMemory.io.instructionRead(25, 22)
+  RegisterFile.io.aSel := programMemory.io.instructionRead(19, 16) // Where the register is specified in the instructions
+  RegisterFile.io.bSel := programMemory.io.instructionRead(15, 12) // Where the register is specified in the instructions
+  RegisterFile.io.writeSel := programMemory.io.instructionRead(25, 20)
 
 
   ////////////////////////////////////////////
