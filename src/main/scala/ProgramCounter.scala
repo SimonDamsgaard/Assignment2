@@ -27,7 +27,11 @@ class ProgramCounter extends Module {
 
   // Mux to decide the final output based on stop and run conditions
   val Rmux = Mux(selecterRmux, programCounterReg, Lmux)
+// Assigns the value of the Rmux to the register if jump is true
+  when (io.run && !io.stop && io.jump){
+    programCounterReg := Rmux
+  }
 
   // Assign the final value to the output
-  io.programCounter := Rmux
+  io.programCounter := programCounterReg
 }
